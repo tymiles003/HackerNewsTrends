@@ -23,8 +23,8 @@ graphic.destroy = ()->
   graphic.svg.remove()
   delete graphic.svg
 
-data.toWordsArray = () ->
-
+data.toWordsArray = (data) ->
+  
 $(document).ready ()->
   graphic.create()
   d3.json "data.json", (data)->
