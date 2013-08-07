@@ -28,13 +28,17 @@
     return delete graphic.svg;
   };
 
-  data.toWordsArray = function() {};
+  data.toWordsArray = function(dataObj) {
+    var year;
+    year = _.keys(dataObj);
+    return console.log(year);
+  };
 
   $(document).ready(function() {
     graphic.create();
-    d3.json("data.json", function(data) {
-      data = data;
-      return console.log("data type: " + typeof data);
+    d3.json("data.json", function(dataObj) {
+      console.log("data type- " + typeof data);
+      return data.toWordsArray(dataObj);
     });
     return $(window).resize(function() {
       graphic.destroy();

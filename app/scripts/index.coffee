@@ -23,13 +23,15 @@ graphic.destroy = ()->
   graphic.svg.remove()
   delete graphic.svg
 
-data.toWordsArray = (data) ->
-  
+data.toWordsArray = (dataObj) ->
+  year = _.keys dataObj
+  console.log year
+
 $(document).ready ()->
   graphic.create()
-  d3.json "data.json", (data)->
-    data = data
-    console.log("data type: " + typeof data)
+  d3.json "data.json", (dataObj)->
+    # data = data
+    data.toWordsArray dataObj
 
   $(window).resize ()->
     graphic.destroy()
