@@ -25,7 +25,8 @@
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.6.6",
     "grunt-contrib-less": "~0.6.4",
-    "grunt-contrib-jshint": "~0.4.3"
+    "grunt-contrib-jshint": "~0.4.3",
+    "matchdep": "~0.1.2"
   },
   "engines": {
     "node": ">=0.8.0"
