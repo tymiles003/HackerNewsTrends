@@ -1,5 +1,5 @@
 graphic = new Object
-
+data = new Object
 graphic.create = ()->
   width = $(document).width()/2
   height = $(document).height()*.85
@@ -23,10 +23,13 @@ graphic.destroy = ()->
   graphic.svg.remove()
   delete graphic.svg
 
+data.toWordsArray = () ->
+
 $(document).ready ()->
   graphic.create()
   d3.json "data.json", (data)->
-    alert(data.length)
+    data = data
+    console.log("data type: " + typeof data)
 
   $(window).resize ()->
     graphic.destroy()
