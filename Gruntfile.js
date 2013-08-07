@@ -241,7 +241,7 @@ module.exports = function(grunt) {
         'htmlmin',
         'concat',
         'cssmin',
-        // 'uglify',
+        'uglify',
         'copy',
         'usemin'
     ]);
