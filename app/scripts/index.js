@@ -29,16 +29,46 @@
   };
 
   data.toWordsArray = function(dataObj) {
-    var year;
+    var i, onedayexample, wordArr, year, _i, _len, _results;
     year = _.keys(dataObj);
-    return console.log(year);
+    wordArr = [];
+    console.log(year);
+    onedayexample = dataObj["2011"]["10"]["10"];
+    _results = [];
+    for (_i = 0, _len = onedayexample.length; _i < _len; _i++) {
+      i = onedayexample[_i];
+      wordArr += i.title.split(" ");
+      _results.push(console.log(wordArr));
+    }
+    return _results;
   };
 
   $(document).ready(function() {
-    graphic.create();
     d3.json("data.json", function(dataObj) {
-      console.log("data type- " + typeof data);
-      return data.toWordsArray(dataObj);
+      var draw, fill, wordsToVisualize;
+      wordsToVisualize = data.toWordsArray(dataObj);
+      fill = d3.scale.category20;
+      draw = function(words) {
+        return d3.select("#graphic").append("svg").attr("width", 300).attr("height", 300).append("g").attr("transform", "translate(150,150)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
+          return d.size + "px";
+        }).style("font-family", "Impact").style("fill", function(d, i) {
+          return fill(i);
+        }).attr("text-anchor", "middle").attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        }).text(function(d) {
+          return d.text;
+        });
+      };
+      return d3.layout.cloud().size([300, 300]).words(wordsToVisualize.map(function(d) {
+        return {
+          text: d,
+          size: 10 + Math.random() * 90
+        };
+      })).padding(5).rotate(function() {
+        return ~~(Math.random() * 2) * 90;
+      }).font("Impact").fontSize(function(d) {
+        return d.size;
+      }).on("end", draw).start;
     });
     return $(window).resize(function() {
       graphic.destroy();

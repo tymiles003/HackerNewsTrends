@@ -25,13 +25,58 @@ graphic.destroy = ()->
 
 data.toWordsArray = (dataObj) ->
   year = _.keys dataObj
+  wordArr = []
   console.log year
+  onedayexample = dataObj["2011"]["10"]["10"]
+  for i in onedayexample
+    wordArr += i.title.split(" ")
+    console.log wordArr
 
 $(document).ready ()->
-  graphic.create()
+  # graphic.create()
   d3.json "data.json", (dataObj)->
     # data = data
-    data.toWordsArray dataObj
+    wordsToVisualize = data.toWordsArray dataObj
+    fill = d3.scale.category20
+
+    draw = (words)->
+      d3.select("#graphic").append("svg")
+      .attr("width", 300)
+      .attr("height", 300)
+      .append("g")
+      .attr("transform", "translate(150,150)")
+      .selectAll("text")
+      .data(words)
+      .enter().append("text")
+      .style("font-size", (d) -> return d.size + "px")
+      .style("font-family", "Impact")
+      .style("fill", (d, i) -> return fill(i))
+      .attr("text-anchor", "middle")
+      .attr("transform", 
+         (d) ->
+           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"
+      )
+      .text((d) -> return d.text);
+
+    d3.layout.cloud().size([300, 300])
+    .words(
+      wordsToVisualize.map(
+        (d)->
+          {text: d, size: 10 + Math.random() * 90}
+      ))
+      .padding(5)
+      .rotate(
+        () -> 
+          return ~~(Math.random() * 2) * 90
+      )
+      .font("Impact")
+      .fontSize(
+        (d) -> 
+          d.size
+      )
+      .on("end", draw)
+      .start;
+     
 
   $(window).resize ()->
     graphic.destroy()
