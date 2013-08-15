@@ -27,10 +27,21 @@ data.toWordsArray = (dataObj) ->
   year = _.keys dataObj
   wordArr = []
   console.log year
-  onedayexample = dataObj["2011"]["10"]["10"]
+  onedayexample = dataObj["2011"]["11"]["11"]
   for i in onedayexample
-    wordArr = _.union wordArr, i.title.split(" ")
-    console.log wordArr
+    wordArr = wordArr.concat i.title.split(" ")
+  wordArr = wordArr.reduce(
+    (acc, curr) ->
+      if (typeof acc[curr] == 'undefined')
+        acc[curr] = 1;
+      else
+        acc[curr] += 1;
+      acc;
+  ,{});
+  wordArr = _.map(wordArr, (num, key)-> 
+    {text:key, size:20+num*5}
+    );
+  console.log wordArr
   wordArr
 
 $(document).ready ()->
@@ -61,11 +72,7 @@ $(document).ready ()->
       .text((d) -> return d.text);
 
     d3.layout.cloud().size([300, 300])
-    .words(
-      wordsToVisualize.map(
-        (d)->
-          {text: d, size: 10 + Math.random() * 90}
-      ))
+    .words(wordsToVisualize)
       .padding(5)
       .rotate(
         () -> 

@@ -33,13 +33,26 @@
     year = _.keys(dataObj);
     wordArr = [];
     console.log(year);
-    onedayexample = dataObj["2011"]["10"]["10"];
+    onedayexample = dataObj["2011"]["11"]["11"];
     for (_i = 0, _len = onedayexample.length; _i < _len; _i++) {
       i = onedayexample[_i];
-      wordArr = _.union(wordArr, i.title.split(" "));
-      console.log(wordArr);
+      wordArr = wordArr.concat(i.title.split(" "));
     }
-    console.log(typeof wordArr);
+    wordArr = wordArr.reduce(function(acc, curr) {
+      if (typeof acc[curr] === 'undefined') {
+        acc[curr] = 1;
+      } else {
+        acc[curr] += 1;
+      }
+      return acc;
+    }, {});
+    wordArr = _.map(wordArr, function(num, key) {
+      return {
+        text: key,
+        size: 20 + num * 5
+      };
+    });
+    console.log(wordArr);
     return wordArr;
   };
 
@@ -60,12 +73,7 @@
           return d.text;
         });
       };
-      return d3.layout.cloud().size([300, 300]).words(wordsToVisualize.map(function(d) {
-        return {
-          text: d,
-          size: 10 + Math.random() * 90
-        };
-      })).padding(5).rotate(function() {
+      return d3.layout.cloud().size([300, 300]).words(wordsToVisualize).padding(5).rotate(function() {
         return ~~(Math.random() * 2) * 90;
       }).font("Impact").fontSize(function(d) {
         return d.size;
