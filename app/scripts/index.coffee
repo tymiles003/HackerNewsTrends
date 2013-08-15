@@ -29,8 +29,10 @@ data.toWordsArray = (dataObj) ->
   console.log year
   onedayexample = dataObj["2011"]["10"]["10"]
   for i in onedayexample
-    wordArr += i.title.split(" ")
+    wordArr = _.union wordArr, i.title.split(" ")
     console.log wordArr
+  console.log typeof wordArr
+  wordArr
 
 $(document).ready ()->
   # graphic.create()
@@ -40,6 +42,7 @@ $(document).ready ()->
     fill = d3.scale.category20
 
     draw = (words)->
+      console.log words
       d3.select("#graphic").append("svg")
       .attr("width", 300)
       .attr("height", 300)
@@ -75,7 +78,7 @@ $(document).ready ()->
           d.size
       )
       .on("end", draw)
-      .start;
+      .start()
      
 
   $(window).resize ()->

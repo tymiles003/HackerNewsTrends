@@ -29,18 +29,18 @@
   };
 
   data.toWordsArray = function(dataObj) {
-    var i, onedayexample, wordArr, year, _i, _len, _results;
+    var i, onedayexample, wordArr, year, _i, _len;
     year = _.keys(dataObj);
     wordArr = [];
     console.log(year);
     onedayexample = dataObj["2011"]["10"]["10"];
-    _results = [];
     for (_i = 0, _len = onedayexample.length; _i < _len; _i++) {
       i = onedayexample[_i];
-      wordArr += i.title.split(" ");
-      _results.push(console.log(wordArr));
+      wordArr = _.union(wordArr, i.title.split(" "));
+      console.log(wordArr);
     }
-    return _results;
+    console.log(typeof wordArr);
+    return wordArr;
   };
 
   $(document).ready(function() {
@@ -49,6 +49,7 @@
       wordsToVisualize = data.toWordsArray(dataObj);
       fill = d3.scale.category20;
       draw = function(words) {
+        console.log(words);
         return d3.select("#graphic").append("svg").attr("width", 300).attr("height", 300).append("g").attr("transform", "translate(150,150)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
           return d.size + "px";
         }).style("font-family", "Impact").style("fill", function(d, i) {
@@ -68,7 +69,7 @@
         return ~~(Math.random() * 2) * 90;
       }).font("Impact").fontSize(function(d) {
         return d.size;
-      }).on("end", draw).start;
+      }).on("end", draw).start();
     });
     return $(window).resize(function() {
       graphic.destroy();
