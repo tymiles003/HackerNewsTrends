@@ -1,4 +1,4 @@
-HackerNewsTrends
+HackerNewsTrends (WORK IN PROGRESS)
 ================
 
 A visualization of tech news trends on HN
