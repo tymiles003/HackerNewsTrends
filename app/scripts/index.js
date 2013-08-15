@@ -50,7 +50,7 @@
       fill = d3.scale.category20;
       draw = function(words) {
         console.log(words);
-        return d3.select("#graphic").append("svg").attr("width", 300).attr("height", 300).append("g").attr("transform", "translate(150,150)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
+        return d3.select("#graphic").append("svg").attr("width", 500).attr("height", 500).append("g").attr("transform", "translate(150,150)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
           return d.size + "px";
         }).style("font-family", "Impact").style("fill", function(d, i) {
           return fill(i);

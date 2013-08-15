@@ -31,7 +31,6 @@ data.toWordsArray = (dataObj) ->
   for i in onedayexample
     wordArr = _.union wordArr, i.title.split(" ")
     console.log wordArr
-  console.log typeof wordArr
   wordArr
 
 $(document).ready ()->
@@ -44,8 +43,8 @@ $(document).ready ()->
     draw = (words)->
       console.log words
       d3.select("#graphic").append("svg")
-      .attr("width", 300)
-      .attr("height", 300)
+      .attr("width", 500)
+      .attr("height", 500)
       .append("g")
       .attr("transform", "translate(150,150)")
       .selectAll("text")
