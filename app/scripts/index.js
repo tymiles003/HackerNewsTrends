@@ -71,11 +71,11 @@
     }, {});
     wordArr = _.map(wordArr, function(num, key) {
       if (_.contains(languages, key)) {
-        num = num * 5;
+        num = num * 2;
       }
       return {
         text: key,
-        size: 10 + num * 1
+        size: 10 + num * 3
       };
     });
     return wordArr;

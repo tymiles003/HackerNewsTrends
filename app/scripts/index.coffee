@@ -76,8 +76,8 @@ data.toWordsArray = (dataObj, startDate) ->
   ,{});
   wordArr = _.map(wordArr, (num, key)-> 
     if _.contains(languages, key)
-      num = num*5
-    {text:key, size:10+num*1}
+      num = num*2
+    {text:key, size:10+num*2}
     );
   wordArr
 
