@@ -75,7 +75,7 @@
       }
       return {
         text: key,
-        size: 10 + num * 3
+        size: 10 + num * 2
       };
     });
     return wordArr;

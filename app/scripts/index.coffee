@@ -104,6 +104,6 @@ $(document).ready ()->
               year: @fromArr[1],
               month: parseInt(@fromArr[0],10),
               }
-          $("#graphicLabel").text("Trends on HN from month "+parseInt(@fromArr[0],10)+" to "+(parseInt(@fromArr[0],10)+2));
+          $("#graphicLabel").text("Trends on HN from month "+parseInt(@fromArr[0],10)+" to "+ (parseInt(@fromArr[0],10)+2));
           graphic.create(@w)
       )
