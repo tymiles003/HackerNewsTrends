@@ -9,6 +9,13 @@ body {
 #main #graphic {
   margin: 20px 0;
 }
+#main #graphicLabel {
+  padding: 10px 0 0 0;
+  font-size: 25px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
 #main #text {
   padding-bottom: 10px;
 }
