@@ -38,18 +38,26 @@
     return $("#graphic").empty();
   };
 
-  data.toWordsArray = function(dataObj, startDate, endDate) {
-    var i, onedayexample, wordArr, year, _i, _len;
-    year = _.keys(dataObj);
+  data.toWordsArray = function(dataObj, startDate) {
+    var i, j, o, onedayexample, wordArr, _i, _j, _k, _len, _ref, _ref1;
     console.log(startDate);
-    console.log(endDate);
     wordArr = [];
-    console.log(year);
-    onedayexample = dataObj["2012"]["10"]["11"];
-    for (_i = 0, _len = onedayexample.length; _i < _len; _i++) {
-      i = onedayexample[_i];
-      wordArr = wordArr.concat(i.title.split(" "));
+    for (i = _i = _ref = startDate.month, _ref1 = startDate.month + 2; _i <= _ref1; i = _i += 1) {
+      for (j = _j = 1; _j <= 31; j = _j += 1) {
+        i = ('0' + j).slice(-2);
+        if (dataObj[startDate.year][i]) {
+          j = ('0' + j).slice(-2);
+          if (dataObj[startDate.year][i][j]) {
+            onedayexample = dataObj[startDate.year][i][j];
+            for (_k = 0, _len = onedayexample.length; _k < _len; _k++) {
+              o = onedayexample[_k];
+              wordArr = wordArr.concat(o.title.split(" "));
+            }
+          }
+        }
+      }
     }
+    console.log(wordArr.length);
     wordArr = _.difference(wordArr.map(function(d) {
       return d.toLowerCase();
     }), stopwords);
@@ -63,11 +71,11 @@
     }, {});
     wordArr = _.map(wordArr, function(num, key) {
       if (_.contains(languages, key)) {
-        num = num * 10;
+        num = num * 5;
       }
       return {
         text: key,
-        size: 20 + num * 5
+        size: 10 + num * 1
       };
     });
     return wordArr;
@@ -76,30 +84,20 @@
   $(document).ready(function() {
     return d3.json("data.json", function(dataObj) {
       $("#from").datepicker({
-        defaultDate: new Date(2010, 10, 10),
         minDate: new Date(2010, 10, 10),
+        maxDate: new Date(2013, 7, 20),
         changeMonth: true,
-        numberOfMonths: 3
-      });
-      $("#to").datepicker({
-        defaultDate: "-1w",
-        maxDate: "-1w",
-        changeMonth: true,
-        numberOfMonths: 3
+        changeYear: true,
+        numberOfMonths: 3,
+        dateFormat: 'mm/yy'
       });
       return $(".dd").change(function() {
-        if ($("#from").val() && $("#to").val()) {
+        if ($("#from").val()) {
           this.fromArr = $("#from").val().split("/");
-          this.toArr = $("#to").val().split("/");
           graphic.destroy();
           this.w = data.toWordsArray(dataObj, {
-            year: this.fromArr[2],
-            month: this.fromArr[0],
-            date: this.fromArr[1]
-          }, {
-            year: this.toArr[2],
-            month: this.toArr[0],
-            date: this.toArr[1]
+            year: this.fromArr[1],
+            month: parseInt(this.fromArr[0], 10)
           });
           return graphic.create(this.w);
         }

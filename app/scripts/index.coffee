@@ -48,17 +48,23 @@ graphic.destroy = ()->
   $("#graphics svg").remove()
   $("#graphic").empty()
 
-data.toWordsArray = (dataObj, startDate, endDate) ->
+data.toWordsArray = (dataObj, startDate) ->
 
-  year = _.keys dataObj
   console.log startDate
-  console.log endDate
-
   wordArr = []
-  console.log year
-  onedayexample = dataObj["2012"]["10"]["11"]
-  for i in onedayexample
-    wordArr = wordArr.concat i.title.split(" ")
+
+  for i in [startDate.month..startDate.month+2] by 1
+    for j in [1..31] by 1
+      i = ('0' + j).slice(-2)
+      if dataObj[startDate.year][i]
+        j = ('0' + j).slice(-2)
+        if dataObj[startDate.year][i][j]
+          onedayexample = dataObj[startDate.year][i][j]
+          for o in onedayexample
+            wordArr = wordArr.concat o.title.split(" ")
+
+  # console.log wordArr
+  console.log wordArr.length
   wordArr = _.difference(wordArr.map((d)-> d.toLowerCase()), stopwords)
   wordArr = wordArr.reduce(
     (acc, curr) ->
@@ -70,26 +76,28 @@ data.toWordsArray = (dataObj, startDate, endDate) ->
   ,{});
   wordArr = _.map(wordArr, (num, key)-> 
     if _.contains(languages, key)
-      num = num*10
-    {text:key, size:20+num*5}
+      num = num*5
+    {text:key, size:10+num*1}
     );
-  # console.log wordArr
   wordArr
 
 $(document).ready ()->
   d3.json "data.json", (dataObj)->
     $( "#from" ).datepicker(
-      defaultDate: new Date(2010, 10, 10),
+      # defaultDate: new Date(2010, 10, 10),
       minDate: new Date(2010, 10, 10),
+      maxDate: new Date(2013, 7, 20),
       changeMonth: true,
+      changeYear: true,
       numberOfMonths: 3,
+      dateFormat: 'mm/yy'
       )
-    $( "#to" ).datepicker(
-      defaultDate: "-1w",
-      maxDate: "-1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      )
+    # $( "#to" ).datepicker(
+    #   defaultDate: "-1w",
+    #   maxDate: "-1w",
+    #   changeMonth: true,
+    #   numberOfMonths: 3,
+    #   )
 
     # console.log @w
     # $(".dd").change(
@@ -108,20 +116,14 @@ $(document).ready ()->
     #   )
     $(".dd").change(
       () ->
-        if $("#from").val() && $("#to").val()
+        if $("#from").val()
           @fromArr = $("#from").val().split("/")
-          @toArr = $("#to").val().split("/")
+          # @toArr = $("#to").val().split("/")
           graphic.destroy()
           @w = data.toWordsArray dataObj,
             {
-              year: @fromArr[2],
-              month: @fromArr[0],
-              date: @fromArr[1]
-              },
-            {
-              year: @toArr[2],
-              month: @toArr[0],
-              date: @toArr[1]
+              year: @fromArr[1],
+              month: parseInt(@fromArr[0],10),
               }
 
           graphic.create(@w)
