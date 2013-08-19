@@ -10,8 +10,8 @@ graphic.create = (wordsToVisualize)->
     console.log words
     d3.select("#graphic")
     .append("svg")
-      .attr("width", 1500)
-      .attr("height", 1500)
+      .attr("width", 1000)
+      .attr("height", 1000)
         .append("g")
         .attr("transform", "translate(500,500)")
         .selectAll("text")
@@ -27,7 +27,7 @@ graphic.create = (wordsToVisualize)->
         )
         .text((d) -> return d.text);
 
-  d3.layout.cloud().size([500, 500])
+  d3.layout.cloud().size([1000, 1000])
   .words(wordsToVisualize)
     .padding(5)
     .rotate(
@@ -92,28 +92,7 @@ $(document).ready ()->
       numberOfMonths: 3,
       dateFormat: 'mm/yy'
       )
-    # $( "#to" ).datepicker(
-    #   defaultDate: "-1w",
-    #   maxDate: "-1w",
-    #   changeMonth: true,
-    #   numberOfMonths: 3,
-    #   )
 
-    # console.log @w
-    # $(".dd").change(
-    #   () ->
-    #     if $("#start .month").val() && $("#start .date").val() && $("#end .month").val() && $("#end .month").val()
-    #       graphic.create(@w, {
-    #         year: $("#start .year").val(),
-    #         month: $("#start .month").val(),
-    #         date: $("#start .date").val()
-    #           }, 
-    #       {
-    #         year: $("#end .year").val(),
-    #         month: $("#end .month").val(),
-    #         date: $("#end .date").val()
-    #           });
-    #   )
     $(".dd").change(
       () ->
         if $("#from").val()
@@ -125,10 +104,6 @@ $(document).ready ()->
               year: @fromArr[1],
               month: parseInt(@fromArr[0],10),
               }
-
+          $("#graphicLabel").text("Trends on HN from month "+parseInt(@fromArr[0],10)+" to "+(parseInt(@fromArr[0],10)+2));
           graphic.create(@w)
       )
-    # graphic.create(w)
-
-# $(window).resize ()->
-    # graphic.destroy()

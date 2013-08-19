@@ -14,7 +14,7 @@
     fill = d3.scale.category20;
     draw = function(words) {
       console.log(words);
-      return d3.select("#graphic").append("svg").attr("width", 1500).attr("height", 1500).append("g").attr("transform", "translate(500,500)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
+      return d3.select("#graphic").append("svg").attr("width", 1000).attr("height", 1000).append("g").attr("transform", "translate(500,500)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
         return d.size + "px";
       }).style("font-family", "Impact").style("fill", function(d, i) {
         return fill(i);
@@ -24,7 +24,7 @@
         return d.text;
       });
     };
-    return d3.layout.cloud().size([500, 500]).words(wordsToVisualize).padding(5).rotate(function() {
+    return d3.layout.cloud().size([1000, 1000]).words(wordsToVisualize).padding(5).rotate(function() {
       return ~~(Math.random() * 2) * 90;
     }).font("Impact").fontSize(function(d) {
       return d.size;
@@ -99,6 +99,7 @@
             year: this.fromArr[1],
             month: parseInt(this.fromArr[0], 10)
           });
+          $("#graphicLabel").text("Trends on HN from month " + parseInt(this.fromArr[0], 10) + " to " + (parseInt(this.fromArr[0], 10) + 2));
           return graphic.create(this.w);
         }
       });
