@@ -14,7 +14,7 @@
     fill = d3.scale.category20;
     draw = function(words) {
       console.log(words);
-      return d3.select("#graphic").append("svg").attr("width", 500).attr("height", 500).append("g").attr("transform", "translate(150,150)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
+      return d3.select("#graphic").append("svg").attr("width", 1500).attr("height", 1500).append("g").attr("transform", "translate(500,500)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
         return d.size + "px";
       }).style("font-family", "Impact").style("fill", function(d, i) {
         return fill(i);
@@ -33,11 +33,16 @@
 
   graphic.update = function() {};
 
-  graphic.destroy = function() {};
+  graphic.destroy = function() {
+    $("#graphics svg").remove();
+    return $("#graphic").empty();
+  };
 
-  data.toWordsArray = function(dataObj) {
+  data.toWordsArray = function(dataObj, startDate, endDate) {
     var i, onedayexample, wordArr, year, _i, _len;
     year = _.keys(dataObj);
+    console.log(startDate);
+    console.log(endDate);
     wordArr = [];
     console.log(year);
     onedayexample = dataObj["2012"]["10"]["11"];
@@ -65,18 +70,41 @@
         size: 20 + num * 5
       };
     });
-    console.log(wordArr);
     return wordArr;
   };
 
   $(document).ready(function() {
     return d3.json("data.json", function(dataObj) {
-      this.w = data.toWordsArray(dataObj);
-      console.log(this.w);
-      return graphic.create(this.w);
+      $("#from").datepicker({
+        defaultDate: new Date(2010, 10, 10),
+        minDate: new Date(2010, 10, 10),
+        changeMonth: true,
+        numberOfMonths: 3
+      });
+      $("#to").datepicker({
+        defaultDate: "-1w",
+        maxDate: "-1w",
+        changeMonth: true,
+        numberOfMonths: 3
+      });
+      return $(".dd").change(function() {
+        if ($("#from").val() && $("#to").val()) {
+          this.fromArr = $("#from").val().split("/");
+          this.toArr = $("#to").val().split("/");
+          graphic.destroy();
+          this.w = data.toWordsArray(dataObj, {
+            year: this.fromArr[2],
+            month: this.fromArr[0],
+            date: this.fromArr[1]
+          }, {
+            year: this.toArr[2],
+            month: this.toArr[0],
+            date: this.toArr[1]
+          });
+          return graphic.create(this.w);
+        }
+      });
     });
   });
-
-  $(window).resize(function() {});
 
 }).call(this);

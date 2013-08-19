@@ -8,25 +8,26 @@ graphic.create = (wordsToVisualize)->
 
   draw = (words)->
     console.log words
-    d3.select("#graphic").append("svg")
-    .attr("width", 1500)
-    .attr("height", 1500)
-    .append("g")
-    .attr("transform", "translate(150,150)")
-    .selectAll("text")
-    .data(words)
-    .enter().append("text")
-    .style("font-size", (d) -> return d.size + "px")
-    .style("font-family", "Impact")
-    .style("fill", (d, i) -> return fill(i))
-    .attr("text-anchor", "middle")
-    .attr("transform", 
-       (d) ->
-         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"
-    )
-    .text((d) -> return d.text);
+    d3.select("#graphic")
+    .append("svg")
+      .attr("width", 1500)
+      .attr("height", 1500)
+        .append("g")
+        .attr("transform", "translate(500,500)")
+        .selectAll("text")
+        .data(words)
+        .enter().append("text")
+        .style("font-size", (d) -> return d.size + "px")
+        .style("font-family", "Impact")
+        .style("fill", (d, i) -> return fill(i))
+        .attr("text-anchor", "middle")
+        .attr("transform", 
+           (d) ->
+             return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"
+        )
+        .text((d) -> return d.text);
 
-  d3.layout.cloud().size([1500, 1500])
+  d3.layout.cloud().size([500, 500])
   .words(wordsToVisualize)
     .padding(5)
     .rotate(
@@ -44,9 +45,15 @@ graphic.create = (wordsToVisualize)->
 graphic.update = ()->
 
 graphic.destroy = ()->
+  $("#graphics svg").remove()
+  $("#graphic").empty()
 
-data.toWordsArray = (dataObj) ->
+data.toWordsArray = (dataObj, startDate, endDate) ->
+
   year = _.keys dataObj
+  console.log startDate
+  console.log endDate
+
   wordArr = []
   console.log year
   onedayexample = dataObj["2012"]["10"]["11"]
@@ -66,15 +73,60 @@ data.toWordsArray = (dataObj) ->
       num = num*10
     {text:key, size:20+num*5}
     );
-  console.log wordArr
+  # console.log wordArr
   wordArr
 
 $(document).ready ()->
   d3.json "data.json", (dataObj)->
-    @w = data.toWordsArray dataObj
-    console.log @w
-    graphic.create(@w)     
+    $( "#from" ).datepicker(
+      defaultDate: new Date(2010, 10, 10),
+      minDate: new Date(2010, 10, 10),
+      changeMonth: true,
+      numberOfMonths: 3,
+      )
+    $( "#to" ).datepicker(
+      defaultDate: "-1w",
+      maxDate: "-1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      )
 
-$(window).resize ()->
+    # console.log @w
+    # $(".dd").change(
+    #   () ->
+    #     if $("#start .month").val() && $("#start .date").val() && $("#end .month").val() && $("#end .month").val()
+    #       graphic.create(@w, {
+    #         year: $("#start .year").val(),
+    #         month: $("#start .month").val(),
+    #         date: $("#start .date").val()
+    #           }, 
+    #       {
+    #         year: $("#end .year").val(),
+    #         month: $("#end .month").val(),
+    #         date: $("#end .date").val()
+    #           });
+    #   )
+    $(".dd").change(
+      () ->
+        if $("#from").val() && $("#to").val()
+          @fromArr = $("#from").val().split("/")
+          @toArr = $("#to").val().split("/")
+          graphic.destroy()
+          @w = data.toWordsArray dataObj,
+            {
+              year: @fromArr[2],
+              month: @fromArr[0],
+              date: @fromArr[1]
+              },
+            {
+              year: @toArr[2],
+              month: @toArr[0],
+              date: @toArr[1]
+              }
+
+          graphic.create(@w)
+      )
+    # graphic.create(w)
+
+# $(window).resize ()->
     # graphic.destroy()
-    # graphic.create()
