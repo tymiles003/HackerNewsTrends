@@ -19,3 +19,7 @@ body {
 #main #text {
   padding-bottom: 10px;
 }
+#main .keywords {
+  cursor: pointer;
+  font-family: Impact;
+}

@@ -18,14 +18,20 @@ graphic.create = (wordsToVisualize)->
         .data(words)
         .enter().append("text")
         .style("font-size", (d) -> return d.size + "px")
-        .style("font-family", "Impact")
         .style("fill", (d, i) -> return fill(i))
         .attr("text-anchor", "middle")
         .attr("transform", 
            (d) ->
              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"
         )
-        .text((d) -> return d.text);
+        .text((d) -> return d.text)
+        .attr("class", "keywords")
+        .on("mouseover", ()->
+          d3.select(@).style("fill","red")
+          )
+        .on("mouseout", ()->
+          d3.select(@).style("fill","black")
+          )
 
   d3.layout.cloud().size([1000, 1000])
   .words(wordsToVisualize)
