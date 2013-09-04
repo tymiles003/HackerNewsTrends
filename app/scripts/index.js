@@ -10,8 +10,10 @@
   languages = ["coffeescript", "ruby", "python", "tex", "javascript", "java", "groovy", "scss", "c++", "php", "haskell", "erlang", "markdown", "scss", "nemerle", "objectivec", "scala", "cs", "actionscript", "applescript", "bash", "clojure", "cmake", "d", "delphi", "dos", "go", "ini", "lisp", "lua", "mel", "perl", "r", "rust", "sql", "vala", "vbscript", "vhdl"];
 
   graphic.create = function(wordsToVisualize) {
-    var draw, fill;
+    var draw, fill, hideDetails, showDetails, tooltip,
+      _this = this;
     fill = d3.scale.category20;
+    tooltip = CustomTooltip("tooltip", 240);
     draw = function(words) {
       console.log(words);
       return d3.select("#graphic").append("svg").attr("width", 1000).attr("height", 1000).append("g").attr("transform", "translate(500,500)").selectAll("text").data(words).enter().append("text").style("font-size", function(d) {
@@ -23,10 +25,22 @@
       }).text(function(d) {
         return d.text;
       }).attr("class", "keywords").on("mouseover", function() {
-        return d3.select(this).style("fill", "red");
+        d3.select(this).style("fill", "red");
+        return showDetails(this);
       }).on("mouseout", function() {
-        return d3.select(this).style("fill", "black");
+        d3.select(this).style("fill", "black");
+        return hideDetails(this);
       });
+    };
+    showDetails = function(element) {
+      var content;
+      d3.select(element).attr("stroke", "yellow");
+      content = "<div class='tooltip title'>Sources</div>";
+      return tooltip.showTooltip(content, d3.event);
+    };
+    hideDetails = function(element) {
+      d3.select(element).attr("stroke", "none");
+      return tooltip.hideTooltip();
     };
     return d3.layout.cloud().size([1000, 1000]).words(wordsToVisualize).padding(5).rotate(function() {
       return ~~(Math.random() * 2) * 90;

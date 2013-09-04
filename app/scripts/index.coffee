@@ -5,6 +5,7 @@ languages = ["coffeescript","ruby","python","tex","javascript","java","groovy","
 
 graphic.create = (wordsToVisualize)->
   fill = d3.scale.category20
+  tooltip = CustomTooltip("tooltip", 240)
 
   draw = (words)->
     console.log words
@@ -28,10 +29,21 @@ graphic.create = (wordsToVisualize)->
         .attr("class", "keywords")
         .on("mouseover", ()->
           d3.select(@).style("fill","red")
+          showDetails(@)
           )
         .on("mouseout", ()->
           d3.select(@).style("fill","black")
+          hideDetails(@)
           )
+
+  showDetails = (element) =>
+    d3.select(element).attr("stroke", "yellow")
+    content = "<div class='tooltip title'>Sources</div>"
+    tooltip.showTooltip(content,d3.event)
+
+  hideDetails = (element) =>
+    d3.select(element).attr("stroke", "none")
+    tooltip.hideTooltip()
 
   d3.layout.cloud().size([1000, 1000])
   .words(wordsToVisualize)
