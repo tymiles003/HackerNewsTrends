@@ -67,7 +67,7 @@
             onedayexample = dataObj[startDate.year][i][j];
             for (_k = 0, _len = onedayexample.length; _k < _len; _k++) {
               o = onedayexample[_k];
-              wordArr = wordArr.concat(o.title.split(" "));
+              wordArr = wordArr.concat(o.keywords);
             }
           }
         }

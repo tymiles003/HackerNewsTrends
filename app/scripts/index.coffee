@@ -80,8 +80,7 @@ data.toWordsArray = (dataObj, startDate) ->
         if dataObj[startDate.year][i][j]
           onedayexample = dataObj[startDate.year][i][j]
           for o in onedayexample
-            wordArr = wordArr.concat o.title.split(" ")
-
+            wordArr = wordArr.concat o.keywords
   # console.log wordArr
   console.log wordArr.length
   wordArr = _.difference(wordArr.map((d)-> d.toLowerCase()), stopwords)
