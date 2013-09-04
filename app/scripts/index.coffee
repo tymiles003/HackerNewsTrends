@@ -27,18 +27,19 @@ graphic.create = (wordsToVisualize)->
         )
         .text((d) -> return d.text)
         .attr("class", "keywords")
-        .on("mouseover", ()->
+        .on("mouseover", (d)->
           d3.select(@).style("fill","red")
-          showDetails(@)
+          showDetails(@, d)
           )
         .on("mouseout", ()->
           d3.select(@).style("fill","black")
           hideDetails(@)
           )
 
-  showDetails = (element) =>
+  showDetails = (element, d) =>
     # d3.select(element).attr("stroke", "yellow")
     content = "<div class='title'>Sources</div>"
+    # content += ("<div>" + d.size + "</div>")
     tooltip.showTooltip(content,d3.event)
 
   hideDetails = (element) =>
@@ -100,7 +101,7 @@ data.toWordsArray = (dataObj, startDate) ->
   wordArr
 
 $(document).ready ()->
-  d3.json "data.json", (dataObj)->
+  d3.json "data/data.json", (dataObj)->
     $( "#from" ).datepicker(
       # defaultDate: new Date(2010, 10, 10),
       minDate: new Date(2010, 10, 10),
