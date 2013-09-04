@@ -37,12 +37,12 @@ graphic.create = (wordsToVisualize)->
           )
 
   showDetails = (element) =>
-    d3.select(element).attr("stroke", "yellow")
-    content = "<div class='tooltip title'>Sources</div>"
+    # d3.select(element).attr("stroke", "yellow")
+    content = "<div class='title'>Sources</div>"
     tooltip.showTooltip(content,d3.event)
 
   hideDetails = (element) =>
-    d3.select(element).attr("stroke", "none")
+    # d3.select(element).attr("stroke", "none")
     tooltip.hideTooltip()
 
   d3.layout.cloud().size([1000, 1000])

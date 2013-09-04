@@ -34,12 +34,10 @@
     };
     showDetails = function(element) {
       var content;
-      d3.select(element).attr("stroke", "yellow");
-      content = "<div class='tooltip title'>Sources</div>";
+      content = "<div class='title'>Sources</div>";
       return tooltip.showTooltip(content, d3.event);
     };
     hideDetails = function(element) {
-      d3.select(element).attr("stroke", "none");
       return tooltip.hideTooltip();
     };
     return d3.layout.cloud().size([1000, 1000]).words(wordsToVisualize).padding(5).rotate(function() {
