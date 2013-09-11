@@ -9,7 +9,9 @@ A visualization of tech news trends on HN
 
 `grunt`
 
-`open app/index.html`
+To start server: `npm start`
+
+[Go to localhost:8000/app](http://localhost:8000/app/)
 
 
 ####Use
