@@ -24,15 +24,15 @@
         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
       }).text(function(d) {
         return d.text;
-      }).attr("class", "keywords").on("mouseover", function() {
+      }).attr("class", "keywords").on("mouseover", function(d) {
         d3.select(this).style("fill", "red");
-        return showDetails(this);
+        return showDetails(this, d);
       }).on("mouseout", function() {
         d3.select(this).style("fill", "black");
         return hideDetails(this);
       });
     };
-    showDetails = function(element) {
+    showDetails = function(element, d) {
       var content;
       content = "<div class='title'>Sources</div>";
       return tooltip.showTooltip(content, d3.event);
@@ -67,7 +67,7 @@
             onedayexample = dataObj[startDate.year][i][j];
             for (_k = 0, _len = onedayexample.length; _k < _len; _k++) {
               o = onedayexample[_k];
-              wordArr = wordArr.concat(o.title.split(" "));
+              wordArr = wordArr.concat(o.keywords);
             }
           }
         }
@@ -98,7 +98,7 @@
   };
 
   $(document).ready(function() {
-    return d3.json("data.json", function(dataObj) {
+    return d3.json("data/data.json", function(dataObj) {
       $("#from").datepicker({
         minDate: new Date(2010, 10, 10),
         maxDate: new Date(2013, 7, 20),
