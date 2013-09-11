@@ -4,7 +4,8 @@
   "description": "A word cloud viz for tech trends/buzz words based on top articles from HN",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"python -m SimpleHTTPServer"
   },
   "repository": {
     "type": "git",
